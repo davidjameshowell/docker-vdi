@@ -3,7 +3,7 @@ FROM ubuntu:20.04 as vdi_base
 ENV DEBIAN_FRONTEND=noninteractive
 
 # Configure timezone and locale to spanish and America/Bogota timezone. Change locale and timezone to whatever you want
-ENV LANG="enUS.UTF-8"
+ENV LANG="en_US.UTF-8"
 ENV LANGUAGE=en_US
 ENV KEYMAP="en"
 ENV TIMEZONE="America/Phoenix"
