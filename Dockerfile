@@ -1,15 +1,14 @@
-FROM ubuntu:18.04 as vdi_base
+FROM ubuntu:20.04 as vdi_base
 
 ENV DEBIAN_FRONTEND=noninteractive
 
 # Configure timezone and locale to spanish and America/Bogota timezone. Change locale and timezone to whatever you want
-ENV LANG="de_DE.UTF-8"
-ENV LANGUAGE=de_DE
-ENV KEYMAP="de"
-ENV TIMEZONE="Europe/Berlin"
+ENV LANG="enUS.UTF-8"
+ENV LANGUAGE=en_US
+ENV KEYMAP="en"
+ENV TIMEZONE="America/Phoenix"
 #ENV DESKTOP="mate-desktop-environment-extras"
 ENV DESKTOP="xfce4"
-
 
 ##################################################################################
 # Base System
@@ -32,27 +31,19 @@ RUN apt-get clean && apt-get update && apt-get install -y locales apt-utils && \
     apt-get autoremove -y && \
     apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
     
-    
 #######################################
 # additional softeware: download tor, firefox, libreoffice and git, etc
 # RUN add-apt-repository ppa:webupd8team/tor-browser && apt-get update -y && \
 	# apt-get install -y aptitude tor firefox libreoffice htop nano git vim tor-browser iftop chromium-browser keepassx sshfs encfs terminator nmap tig mtr && \
 
-RUN	apt-get update && apt-get install -y chromium-browser firefox torbrowser-launcher && \
+RUN	apt-get update && apt-get install -y chromium-browser firefox torbrowser-launcher tmux && \
 	# Clean up APT when done.
 	apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
-
-
-
-
-
-
 
 ##################################################################################
 # nomachine installation
 
 FROM vdi_base as vdi
-
 
 #######################################
 # ONLINE install
@@ -84,7 +75,6 @@ RUN	dpkg -i /nomachine.deb && \
     # Cleanup
     rm -f /nomachine.deb
 
-
 #######################################
 # add Configs
 ADD ./configs/server.cfg /usr/NX/etc/server.cfg
@@ -93,7 +83,6 @@ ADD ./configs/node.cfg /usr/NX/etc/node.cfg
 ADD ./configs/bash_profile /home/user/.bash_profile
 ## Desktop config
 ADD ./configs/xfce4 /home/user/.config/xfce4
-
 
 ADD nxserver.sh /
 
